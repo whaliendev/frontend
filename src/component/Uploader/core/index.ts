@@ -4,6 +4,7 @@ import { UnknownPolicyError, UploaderError, UploaderErrorName } from "./errors";
 import Base from "./uploader/base";
 import Local from "./uploader/local";
 import { Pool } from "./utils/pool";
+import { getPolicyFuckedByCompliance } from "./utils/compliance";
 import {
     cleanupResumeCtx,
     getAllFileEntries,
@@ -207,7 +208,7 @@ export default class UploadManager {
                     (file): Base =>
                         this.dispatchUploader({
                             type: TaskType.file,
-                            policy: this.policy as Policy,
+                            policy: getPolicyFuckedByCompliance(file, this.policy as Policy),
                             dst: getDirectoryUploadDst(dst, file),
                             file: file,
                             size: file.size,
